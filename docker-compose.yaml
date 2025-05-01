@@ -1,0 +1,47 @@
+services:
+  app1:
+    build: ./app
+    container_name: app1
+    ports:
+      - 3001:3000
+    environment:
+      - SERVER_PORT=3000
+      - SERVER_HOST=0.0.0.0
+      - SERVER_NUMBER=1
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - WEATHER_API_URL=https://api.open-meteo.com/v1/forecast
+    depends_on:
+      - redis
+
+  app2:
+    build: ./app
+    container_name: app2
+    ports:
+      - 3002:3000
+    environment:
+      - SERVER_PORT=3000
+      - SERVER_HOST=0.0.0.0
+      - SERVER_NUMBER=2
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - WEATHER_API_URL=https://api.open-meteo.com/v1/forecast
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - 6379:6379
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - app1
+      - app2
