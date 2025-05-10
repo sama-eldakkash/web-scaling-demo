@@ -2,8 +2,9 @@ const express = require('express');
 const { createClient } = require('redis');
 const axios = require('axios');
 
-const serverPort = process.env.SERVER_PORT;
-const serverHost = process.env.SERVER_HOST;
+const serverPort = 8080;
+const serverHost = '0.0.0.0';
+
 
 const serverNumber = process.env.SERVER_NUMBER;
 const weatherApiUrl = process.env.WEATHER_API_URL;
